@@ -1,29 +1,22 @@
 from Crypto.Util import number
 
 def genBase(size):
-    A = number.getRandomNBitInteger(size)
-    B = number.getRandomNBitInteger(size)
+    A = number.getPrime(size)
+    B = number.getPrime(size)
     while B == A:
-        B = number.getRandomNBitInteger(size)
+        B = number.getPrime(size)
     return A, B
 
 
 def keygen(size):
     A, B = genBase(size)
-    D = A * B
-    x = number.getRandomRange(1, (A - 1))
-    y = number.getRandomRange(1, (A - 1))
-    z = (x + y) % D
-    return z, x, D
+    sk = number.getRandomRange(1, (B - 1))
+    return sk, B, A
 
 def kxchang_demo(size):
     # Generate keys for both parties
     skA, pkA, nA = keygen(size)
     skB, pkB, nB = keygen(size)
-    # Exchange public modulus and create the shared modulus
-    S = nA * nB
-    # One party generates a point between 1 and S minus 1
-    y = number.getRandomRange(1, (S - 1))
     # Generate phase 1 by encrypting the public key
     phase1A = pow(pkA, skA, S)
     phase1B = pow(pkA, skB, S)
@@ -31,8 +24,8 @@ def kxchang_demo(size):
     phase2A = pow(phase1B, skA, S)
     phase2B = pow(phase1A, skB, S)
     # Both parties encrypt y using the secret modulus and send phase3
-    phase3A = pow(y, skA, phase2A)
-    phase3B = pow(y, skB, phase2B)
+    phase3A = pow(pkB, skA, phase2A)
+    phase3B = pow(pkB, skB, phase2B)
     # Compute the shared secret
     phase4A = pow(phase3B, skA, phase2A)
     phase4B = pow(phase3A, skB, phase2B)

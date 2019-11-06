@@ -71,41 +71,34 @@ def testencrypt(pk, sk, mod):
     return False
 
 def genBase(size):
-    A = number.getRandomNBitInteger(size)
-    B = number.getRandomNBitInteger(size)
+    A = number.getPrime(size)
+    B = number.getPrime(size)
     while B == A:
-        B = number.getRandomNBitInteger(size)
+        B = number.getPrime(size)
     return A, B
     
 
 def keygen():
     good = 0
-    size = 4
+    size = 8
     A, B = genBase(size)
-    D = A * B
-    x = number.getRandomRange(1, (A - 1))
-    y = number.getRandomRange(1, (A - 1))
-    z = (x + y) % D
-    return z, x, D
+    sk = number.getRandomRange(1, (B - 1))
+    return sk, B, A
     
     
 msg = 65
 sk, pk, n = keygen()
 skB, pkB, nB = keygen()
-S = n * nB 
-y = number.getRandomRange(1, (S - 1))
-yB = number.getRandomRange(1, (S - 1))
-print y
 print sk, pk, n
 print skB, pkB, nB
-p1 = pow(pk, sk, S)
-p1B = pow(pk, skB, S)
+p1 = pow(pk, sk, n)
+p1B = pow(pk, skB, n)
 print "p1", p1, p1B
-p2 = pow(p1B, sk, S)
-p2B = pow(p1, skB, S)
+p2 = pow(p1B, sk, n)
+p2B = pow(p1, skB, n)
 print "p2", p2, p2B
-p3 = pow(y, sk, p2)
-p3B = pow(y, skB, p2B)
+p3 = pow(pkB, sk, p2)
+p3B = pow(pkB, skB, p2B)
 print "p3", p3, p3B
 p4 = pow(p3B, sk, p2)
 p4B = pow(p3, skB, p2B)
