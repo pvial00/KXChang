@@ -50,26 +50,6 @@ def discreteLogarithm(a, b, m):
   
 from Crypto.Util import number
 
-def encrypt(ptxt, pk, mod):
-    return pow(ptxt, pk, mod)
-
-def decrypt(ctxt, sk, mod):
-    return pow(ctxt, sk, mod)
-
-def testencrypt(pk, sk, mod):
-    msg = "012345678901234567890"
-    msg = "A"
-    m = number.bytes_to_long(msg)
-    ctxt = encrypt(m, pk, mod)
-    if sk != None:
-
-        ptxt = decrypt(ctxt, sk, mod)
-        if ptxt == m:
-            return True
-        else:
-            return False
-    return False
-
 def genBase(size):
     A = number.getPrime(size)
     B = number.getPrime(size)
@@ -78,17 +58,16 @@ def genBase(size):
     return A, B
     
 
-def keygen():
-    good = 0
-    size = 8
+def keygen(size):
     A, B = genBase(size)
     sk = number.getRandomRange(1, (B - 1))
     return sk, B, A
     
     
 msg = 65
-sk, pk, n = keygen()
-skB, pkB, nB = keygen()
+size = 8
+sk, pk, n = keygen(size)
+skB, pkB, nB = keygen(size)
 print sk, pk, n
 print skB, pkB, nB
 p1 = pow(pk, sk, n)
@@ -105,9 +84,13 @@ p4B = pow(p3, skB, p2B)
 print "p4", p4, p4B
 #key = number.long_to_bytes(p4)
 #print len(key)
-Osk = discreteLogarithm(pk, p1, S)
+Osk = discreteLogarithm(pk, p1, n)
 print Osk
-o1 = pow(p1B, Osk, S)
+o1 = pow(p1B, Osk, n)
 print o1
 o2 = pow(p3B, Osk, o1)
 print o2
+Osk = discreteLogarithm(p2, p3, n)
+print Osk
+o1 = pow(p3B, Osk, n)
+print o1
