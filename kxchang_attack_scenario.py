@@ -86,12 +86,12 @@ def keygen():
     x = number.getRandomRange(1, (A - 1))
     y = number.getRandomRange(1, (A - 1))
     z = (x + y) % D
-    return z, x, D, A
+    return z, x, D
     
     
 msg = 65
-sk, pk, n, M = keygen()
-skB, pkB, nB, MB = keygen()
+sk, pk, n = keygen()
+skB, pkB, nB = keygen()
 S = n * nB 
 y = number.getRandomRange(1, (S - 1))
 yB = number.getRandomRange(1, (S - 1))
