@@ -1,3 +1,3 @@
 # KXChang
 
-KXChange is a prototype key exchange algorithm base off of DiffieHellman
+KXChange is a prototype key exchange algorithm based off of DiffieHellman
