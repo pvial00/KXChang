@@ -65,32 +65,32 @@ def keygen(size):
     
     
 msg = 65
-size = 8
+size = 24
 sk, pk, n = keygen(size)
 skB, pkB, nB = keygen(size)
-print sk, pk, n
-print skB, pkB, nB
+print(sk, pk, n)
+print(skB, pkB, nB)
 p1 = pow(pk, sk, n)
 p1B = pow(pk, skB, n)
-print "p1", p1, p1B
+print("p1", p1, p1B)
 p2 = pow(p1B, sk, n)
 p2B = pow(p1, skB, n)
-print "p2", p2, p2B
+print("p2", p2, p2B)
 p3 = pow(pkB, sk, p2)
 p3B = pow(pkB, skB, p2B)
-print "p3", p3, p3B
+print("p3", p3, p3B)
 p4 = pow(p3B, sk, p2)
 p4B = pow(p3, skB, p2B)
-print "p4", p4, p4B
+print("p4", p4, p4B)
 #key = number.long_to_bytes(p4)
 #print len(key)
 Osk = discreteLogarithm(pk, p1, n)
-print Osk
+print(Osk)
 o1 = pow(p1B, Osk, n)
-print o1
+print(o1)
 o2 = pow(p3B, Osk, o1)
-print o2
+print(o2)
 Osk = discreteLogarithm(p2, p3, n)
-print Osk
+print(Osk)
 o1 = pow(p3B, Osk, n)
-print o1
+print(o1)
